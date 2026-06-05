@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Endereco\EnderecoController;
 use App\Http\Controllers\Itens\ItensController;
+use App\Http\Controllers\Rastreamento\RastreamentoController;
 use App\Http\Controllers\Vendedores\VendedoresController;
 use App\Http\Controllers\Clientes\ClientesController;
 use App\Http\Controllers\Vendas\VendasController;
@@ -63,6 +64,13 @@ Route::prefix('/vendas')->group(function () {
     Route::get('/excel/{idVenda}', [VendasController::class, 'export'])->name('vendas.export');
     Route::get('/pdf/{idVenda}', [VendasController::class, 'exportPdf'])->name('vendas.exportPdf');
 
+});
+// ===== RASTREAMENTO ==
+route::prefix('/rastreamento')->group(function () {
+
+    route::get('/{qrCode}', [RastreamentoController::class, 'visualizar'])->name('rastreamento.visualizar');
+
+    Route::post('/{qrCode}/avancar',[RastreamentoController::class, 'avancarStatus'])->name('rastreamento.avancar');
 });
 // ===== PRODUTOS =====
 

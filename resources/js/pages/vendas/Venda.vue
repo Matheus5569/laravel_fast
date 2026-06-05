@@ -103,7 +103,7 @@ function obterValorComissao(valorVenda: number, comissao: number): number {
 
                     <Button class="bg-yellow-400 text-black hover:bg-yellow-500">
                         <Icon name="plus" />
-                        Realizar Venda
+                        Realizar Venda 
                     </Button>
                 </Link>
             </div>

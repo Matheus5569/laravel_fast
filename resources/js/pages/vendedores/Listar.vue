@@ -28,7 +28,7 @@ console.log(vendedoresList);
 
 <template>
 
-    <Head title="Vendedor" />
+    <Head title="Gerente" />
 
     <AppLayout>
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
@@ -37,7 +37,7 @@ console.log(vendedoresList);
                 <Link :href="vendedores.persistir()">
                     <Button class="bg-yellow-400 text-black hover:bg-yellow-500">
                         <Icon name="plus" />
-                        Criar Novo Vendedor
+                        Criar Novo Gerente
                     </Button>
                 </Link> 
             </div>
@@ -87,7 +87,7 @@ console.log(vendedoresList);
               <div class="flex h-full w-full flex-col items-center justify-center gap-4" v-else>
                     <Icon name="users" class="h-16 w-16 text-muted-foreground" />
                      <p class="text-center text-muted-foreground">
-                        Nenhum vendedor encontrado.
+                        Nenhum Gerente encontrado.
                     </p> 
                 </div> 
             </div>

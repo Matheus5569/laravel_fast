@@ -21,7 +21,7 @@ defineProps<{
 
 <template>
     <AuthBase
-        title="logue-se em sua conta"
+        title="Faça seu Login"
         description="Entre com seu Email"
     >
         <Head title="Login" />

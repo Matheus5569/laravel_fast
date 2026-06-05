@@ -12,12 +12,30 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import vendas from '@/routes/vendas';
+import { ref } from 'vue';
 
 const props = defineProps<{
     venda: Record<string, any>;
 }>();
 
 const venda = props.venda;
+
+
+
+const modalRastreamento = ref(false);
+const dadosRastreamento = ref<any>(null);
+
+async function abrirRastreamento() {
+
+    const response = await fetch(
+        `/rastreamento/${venda.qr_code}`
+    );
+
+    dadosRastreamento.value =
+        await response.json();
+
+    modalRastreamento.value = true;
+}
 
 function removeVenda(id_venda: number) {
     router.delete(vendas.remove(id_venda), {
@@ -30,7 +48,7 @@ function removeVenda(id_venda: number) {
         },
     });
 }
-function gerarExcel(idVenda){
+function gerarExcel(idVenda) {
     router.get(vendas.export(idVenda));
 }
 </script>
@@ -71,7 +89,27 @@ function gerarExcel(idVenda){
                 </div>
             </DialogContent>
         </Dialog>
+        <Dialog v-model:open="modalRastreamento">
 
+            <DialogContent>
+
+                <Heading title="Rastreamento da Produção" />
+
+                <div v-if="dadosRastreamento">
+
+                    <div v-for="item in dadosRastreamento.rastreamento" :key="item.id">
+                        {{ item.status }}
+                    </div>
+
+                </div>
+
+            </DialogContent>
+
+        </Dialog>
+        <Button class="bg-blue-500 hover:bg-blue-600" @click="abrirRastreamento">
+            <Icon name="eye" />
+            Rastrear
+        </Button>
         <a :href="vendas.export(venda.id).url" target="_blank" rel="noopener noreferrer">
             <Button class="bg-green-800 hover:bg-green-800/90">
                 <Icon name="sheet" />

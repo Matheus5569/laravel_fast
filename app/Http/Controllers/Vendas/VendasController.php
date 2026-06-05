@@ -18,6 +18,8 @@ use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use Laravel\Pail\ValueObjects\Origin\Console;
 use Dompdf\Dompdf;
+use Illuminate\Support\Str;
+use App\Models\RastreamentoModel;
 
 class VendasController extends Controller
 {
@@ -32,7 +34,7 @@ class VendasController extends Controller
 
         $clientes = ClienteModel::query()->where('removido', false)->get();
 
-     
+
         $vendas = VendaModel::query()->with(['cliente', 'vendedor.users', 'itens.produto'])->where('removido', false)->
             when(auth()->user()->parent_user_id, function ($query) {
                 $query->where('id_vendedor', auth()->user()->id);
@@ -93,8 +95,16 @@ class VendasController extends Controller
                 'id_cliente' => $request->id_cliente,  // Cliente que comprou
                 'id_vendedor' => auth()->user()->id,   // Vendedor que fez a venda
                 'id_admin' => $idAdmin,                 // Admin que cadastrou
+
+                'qr_code' => Str::uuid(),
+                'status_atual' => 'orcamento_criado',
             ]);
 
+            RastreamentoModel::query()->create([
+                'id_venda' => $venda->id,
+                'status' => 'orcamento_criado',
+                'observacao' => 'Orçamento criado',
+            ]);
             // 2. CRIA OS ITENS DA VENDA (um por um)
             foreach ($request->itens as $item) {
                 ItensModel::query()->create([
@@ -105,6 +115,7 @@ class VendasController extends Controller
                     'id_admin' => $idAdmin,
                 ]);
             }
+
 
             // Se chegou até aqui, tudo deu certo - confirma a transação
             $conn->commit();
