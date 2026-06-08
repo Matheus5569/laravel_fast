@@ -7,7 +7,7 @@ class RastreamentoModel extends BaseModel
     protected $table = 'tb_rastreamento';
 
     protected $fillable = [
-        'id_venda',
+        'id_venda', 
         'status',
         'observacao'
     ];

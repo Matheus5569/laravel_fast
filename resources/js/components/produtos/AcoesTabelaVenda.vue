@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import vendas from '@/routes/vendas';
 import { ref } from 'vue';
+import { Helper } from '@/Utils/Helper';
 
 const props = defineProps<{
     venda: Record<string, any>;
@@ -50,6 +51,54 @@ function removeVenda(id_venda: number) {
 }
 function gerarExcel(idVenda) {
     router.get(vendas.export(idVenda));
+}
+function traduzirStatus(status: string) {
+    const statusMap = {
+        orcamento_criado: 'Orçamento Criado',
+        fazendo_materiais: 'Fazendo Materiais',
+        recorte: 'Recorte',
+        pintura: 'Pintura',
+        estufa_polimerizacao: 'Estufa',
+        separacao: 'Separação',
+        aguardando_caminhoneiro: 'Aguardando Caminhoneiro',
+        concluido: 'Concluído',
+    };
+
+    return statusMap[status] ?? status;
+}
+
+const etapas = [
+    'orcamento_criado',
+    'fazendo_materiais',
+    'recorte',
+    'pintura',
+    'estufa_polimerizacao',
+    'separacao',
+    'aguardando_caminhoneiro',
+    'concluido',
+];
+
+function indiceStatusAtual() {
+    if (!dadosRastreamento.value) {
+        return -1;
+    }
+
+    return etapas.indexOf(
+        dadosRastreamento.value.status_atual
+    );
+}
+function obterDataEtapa(status: string) {
+
+    if (!dadosRastreamento.value) {
+        return null;
+    }
+
+    const registro =
+        dadosRastreamento.value.rastreamento.find(
+            (item: any) => item.status === status
+        );
+
+    return registro?.created_at ?? null;
 }
 </script>
 
@@ -93,12 +142,66 @@ function gerarExcel(idVenda) {
 
             <DialogContent>
 
-                <Heading title="Rastreamento da Produção" />
 
                 <div v-if="dadosRastreamento">
 
-                    <div v-for="item in dadosRastreamento.rastreamento" :key="item.id">
-                        {{ item.status }}
+                    <Heading title="Rastreamento da Produção" />
+                    <h3>Status Atual:</h3>
+
+                    <p>
+                        {{ traduzirStatus(dadosRastreamento.status_atual) }}
+                    </p>
+
+                    <hr class="my-4">
+
+                    <div class="mt-4">
+
+                        <div v-for="(etapa, index) in etapas" :key="etapa" class="flex gap-4">
+
+                            <!-- Coluna da bolinha -->
+
+                            <div class="flex flex-col items-center">
+
+                                <div v-if="index < indiceStatusAtual()"
+                                    class="flex h-6 w-6 items-center justify-center rounded-full bg-green-500 text-white">
+                                    ✓
+                                </div>
+
+                                <div v-else-if="index === indiceStatusAtual()"
+                                    class="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-white">
+                                    ●
+                                </div>
+
+                                <div v-else
+                                    class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-gray-300 text-gray-400">
+                                    ○
+                                </div>
+
+                                <div v-if="index < etapas.length - 1" class="h-10 w-[2px] bg-gray-300" />
+                            </div>
+
+
+                            <div class="pb-8">
+                                <p :class="{
+                                    'font-bold text-green-600': index < indiceStatusAtual(),
+                                    'font-bold text-blue-600': index === indiceStatusAtual(),
+                                    'text-gray-400': index > indiceStatusAtual(),
+                                }">
+                                    {{ traduzirStatus(etapa) }}
+                                </p>
+
+                                <p v-if="obterDataEtapa(etapa)" class="text-xs text-muted-foreground">
+                                    {{
+                                        Helper.formatarDateTimePtBr(
+                                            obterDataEtapa(etapa)
+                                        )
+                                    }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>

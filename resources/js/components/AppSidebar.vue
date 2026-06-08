@@ -22,6 +22,7 @@ import produto from '@/routes/produto';
 import vendas from '@/routes/vendas';
 import { computed } from 'vue';
 import { dashboard } from '@/routes';
+import rastreamento from '@/routes/rastreamento/index.js';
 const page = usePage();
 
 const roleUser = computed(() => (page.props as any).auth?.roleName ?? null);
@@ -55,6 +56,12 @@ const mainNavItems = [
     {
         title: 'Venda',
         href: vendas.listar(),
+        icon: ShoppingBag,
+
+    },
+    {
+        title: 'Rastreamento',
+        href: rastreamento.listar(),
         icon: ShoppingBag,
 
     },

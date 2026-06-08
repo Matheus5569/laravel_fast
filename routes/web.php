@@ -66,11 +66,11 @@ Route::prefix('/vendas')->group(function () {
 
 });
 // ===== RASTREAMENTO ==
-route::prefix('/rastreamento')->group(function () {
+Route::prefix('/rastreamento')->group(function () {
 
-    route::get('/{qrCode}', [RastreamentoController::class, 'visualizar'])->name('rastreamento.visualizar');
-
-    Route::post('/{qrCode}/avancar',[RastreamentoController::class, 'avancarStatus'])->name('rastreamento.avancar');
+    Route::get('/',[RastreamentoController::class, 'index'])->name('rastreamento.listar');
+    Route::get('/{qrCode}', [RastreamentoController::class, 'visualizar'])->name('rastreamento.visualizar');
+    Route::post('/avancar/{idVenda}', [RastreamentoController::class, 'avancarStatus'])->name('rastreamento.avancar');
 });
 // ===== PRODUTOS =====
 
