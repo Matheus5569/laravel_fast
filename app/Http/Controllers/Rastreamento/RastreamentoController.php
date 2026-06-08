@@ -12,7 +12,7 @@ class RastreamentoController extends Controller
 {
     public function visualizar($qrCode)
     {
-        $venda = VendaModel::with([ 
+        $venda = VendaModel::with([
             'cliente',
             'rastreamento'
         ])
@@ -63,19 +63,35 @@ class RastreamentoController extends Controller
         return redirect()->route('rastreamento.listar')
             ->with('success', 'Status atualizado com sucesso!');
     }
-    public function index()
+    public function index(Request $request)
     {
+        $busca = $request->busca;
+
         $vendas = VendaModel::with([
             'cliente',
             'rastreamento'
         ])
             ->where('removido', false)
-            ->get();
 
-        return Inertia::render(
+            ->when($busca, function ($query) use ($busca) {
+
+                $query->where('qr_code', 'like', "%{$busca}%")
+
+                    ->orWhereHas('cliente', function ($cliente) use ($busca) {
+                        $cliente->where(
+                            'nome',
+                            'like',
+                            "%{$busca}%"
+                        );
+                    });
+            })
+
+            ->get();
+return Inertia::render(
             'rastreamento/Rastreamento',
             [
-                'vendas' => $vendas
+                'vendas' => $vendas,
+                'filtro' => $busca,
             ]
         );
     }

@@ -60,7 +60,11 @@ function traduzirStatus(status: string) {
 
     return statusMap[status] ?? status;
 }
-
+function pesquisar() {
+    router.get('/rastreamento', {
+        busca: filtro.value,
+    });
+}
 </script>
 <template>
 
@@ -81,6 +85,7 @@ function traduzirStatus(status: string) {
                     <TableHeader>
 
                         <TableRow>
+                            <TableHead>Código</TableHead>
                             <TableHead>Cliente</TableHead>
                             <TableHead>Status Atual</TableHead>
                             <TableHead>Ações</TableHead>
@@ -91,7 +96,9 @@ function traduzirStatus(status: string) {
                     <TableBody>
 
                         <TableRow v-for="venda in vendasFiltradas" :key="venda.id">
-
+                            <TableCell>
+                                PED-{{ String(venda.id).padStart(5, '0') }}
+                            </TableCell>
                             <TableCell>
                                 {{ venda.cliente.nome }}
                             </TableCell>

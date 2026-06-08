@@ -177,6 +177,8 @@ function submit() {
                                     </SelectContent>
                                 </Select>
                                 <InputError :message="form.errors.id_cliente" />
+                                <!--iplementar os campos aqui-->
+                                
                             </div>
                         </div>
                         <Separator />
