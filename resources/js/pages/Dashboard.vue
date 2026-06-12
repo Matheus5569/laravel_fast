@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/vue3'; // ✅ Correto: importar do Inertia
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { User, Users, Gift, ShoppingCart } from 'lucide-vue-next'; 
+import { User, Users, Gift, ShoppingCart, Truck } from 'lucide-vue-next'; 
 import Icon from '@/components/Icon.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -20,13 +20,28 @@ onMounted(() => {
 // Funcionalidades reais do sistema
 const funcionalidades = [
     {
-        titulo: 'Vendedores',
-        descricao: 'Cadastre, edite ou exclua vendedores. Gerencie os dados de cada vendedor do sistema.',
+        titulo: 'Gerentes',
+        descricao: 'Cadastre, edite ou exclua gerentes. Gerencie os dados de cada gerente do sistema.',
+        icone: User,
+    },
+    {
+        titulo: 'Caminhoneiros',
+        descricao: 'Cadastre, edite ou exclua caminhoneiros. Gerencie os dados de cada caminhoneiro do sistema.',
         icone: User,
     },
     {
         titulo: 'Clientes',
         descricao: 'Cadastre novos clientes e edite informações.',
+        icone: Users,
+    },
+    {
+        titulo: 'Funcionários',
+        descricao: 'Cadastre, edite ou exclua funcionários. Gerencie os dados de cada funcionário do sistema.',
+        icone: Users,
+    },
+    {
+        titulo: 'Baias',
+        descricao: 'Cadastre, edite ou exclua baias. Gerencie os dados de cada baia do sistema.',
         icone: Users,
     },
     {
@@ -38,6 +53,11 @@ const funcionalidades = [
         titulo: 'Vendas',
         descricao: 'Realize vendas selecionando produtos, gerencie itens do carrinho e finalize transações.',
         icone: ShoppingCart,
+    },
+    {
+        titulo: 'Rastreamentos',
+        descricao: 'Veja os rastreamentos em tempo real.',
+        icone: Truck,
     },
 ];
 </script>

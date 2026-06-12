@@ -7,6 +7,9 @@ use App\Http\Controllers\Vendedores\VendedoresController;
 use App\Http\Controllers\Clientes\ClientesController;
 use App\Http\Controllers\Vendas\VendasController;
 use App\Http\Controllers\Produto\ProdutoController;
+use App\Http\Controllers\Caminhoneiros\CaminhoneirosController;
+use App\Http\Controllers\Funcionarios\FuncionariosController;
+use App\Http\Controllers\Baias\BaiasController;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,6 +40,37 @@ Route::prefix('/vendedores')->middleware('role:admin')->group(function () {
     Route::delete('/remove/{id_vendedor}', [VendedoresController::class, 'remove'])->name('vendedores.remove');
 
 });
+
+// ===== Caminhoneiros =====
+
+Route::prefix('/caminhoneiros')->middleware('role:admin')->group(function () {
+
+    Route::get('/', [CaminhoneirosController::class, 'index'])->name('caminhoneiros.listar');
+
+});
+
+// ===== Funcionários =====
+
+Route::prefix('/funcionarios')->middleware('role:admin')->group(function () {
+
+    Route::get('/', [FuncionariosController::class, 'index'])
+        ->name('funcionarios.listar');
+
+    Route::get('/persistir/{id?}', [FuncionariosController::class, 'persistir'])
+        ->name('funcionarios.persistir');
+
+});
+
+// ===== Baias =====
+
+Route::prefix('/baias')->middleware('role:admin')->group(function () {
+
+    Route::get('/', [BaiasController::class, 'index'])
+        ->name('baias.listar');
+
+});
+
+
 // ===== CLIENTES =====
 
 Route::prefix('/clientes')->middleware('role:admin')->group(function () {

@@ -12,46 +12,46 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import vendedores from '@/routes/vendedores';
+import caminhoneiros from '@/routes/caminhoneiros';
 import { computed } from 'vue';
 import { Helper } from '@/Utils/Helper';
 import AcoesTabelaVendedor from '@/components/produtos/AcoesTabelaVendedor.vue';
 import Icon from '@/components/Icon.vue';
 
-type Vendedor = Record<string, any>;
+type Caminhoneiro = Record<string, any>;
 const page = usePage();
-const vendedoresList = computed<Vendedor[]>(() => {
-    return page.props.vendedores ?? [];
+const caminhoneirosList = computed(() => {
+    return page.props.caminhoneiros ?? [];
 });
-console.log(vendedoresList);
+console.log(caminhoneirosList);
 </script>
 
 <template>
 
-    <Head title="Gerente" />
+    <Head title="Caminhoneiro" />
 
     <AppLayout>
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-            <Heading title="Gerentes" description="Lista de gerentes" />
+            <Heading title="Caminhoneiros" description="Lista de caminhoneiros" />
             <div class="md:grid-cols 4 grid-cols-1">
-                <Link :href="vendedores.persistir()">
+                <Link :href="caminhoneiros.listar()">
                     <Button class="bg-yellow-400 text-black hover:bg-yellow-500">
                         <Icon name="plus" />
-                        Criar Novo Gerente
+                        Criar Novo Caminhoneiro
                     </Button>
-                </Link> 
+                </Link>
             </div>
 
             <div
                 class="relative min-h-screen flex-1 rounded-xl border border-sidebar-border/70 p-4 md:min-h-min dark:border-sidebar-border">
                 <!-- <Table v-if="vendedoresList.length > 0"> -->
-                <Table v-if="vendedoresList.length > 0">
+                <Table v-if="caminhoneirosList.length > 0">
                     <TableHeader>
                         <TableRow>
-                            <TableHead> Nome </TableHead>
+                            <TableHead>Nome</TableHead>
                             <TableHead>Email</TableHead>
                             <TableHead>CPF</TableHead>
-                            <TableHead> Ações </TableHead>
+                            <TableHead>Ações</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -65,17 +65,17 @@ console.log(vendedoresList);
                                              <AcoesTabelaVendedor :v="v" />
                                         </TableCell> -->
                         <!-- </TableRow> -->
-                        <TableRow v-for="vendedor in vendedoresList" :key="vendedor.id_vendedor">
-                            <TableCell> {{ vendedor.users.name }}</TableCell>
-                            <TableCell> {{ vendedor.users.email }} </TableCell>
-                            <TableCell>{{ Helper.formatarCPF(vendedor.cpf) }} </TableCell>
+                        <TableRow v-for="caminhoneiro in caminhoneirosList" :key="caminhoneiro.id_vendedor">
+                            <TableCell> {{ caminhoneiro.users.name }}</TableCell>
+                            <TableCell> {{ caminhoneiro.users.email }} </TableCell>
+                            <TableCell>{{ Helper.formatarCPF(caminhoneiro.cpf) }}</TableCell>
                             <TableCell>
                                 <div class="flex gap-4">
                                     <div class="flex gap-4">
                                         <!-- Editar -->
-                                        
-                                     <AcoesTabelaVendedor :vendedor="vendedor"/>
-                                        
+
+                                        <<AcoesTabelaVendedor :vendedor="caminhoneiro"/>
+
                                     </div>
                                 </div>
                             </TableCell>
@@ -83,13 +83,13 @@ console.log(vendedoresList);
                     </TableBody>
 
                 </Table>
-                
-              <div class="flex h-full w-full flex-col items-center justify-center gap-4" v-else>
+
+                <div class="flex h-full w-full flex-col items-center justify-center gap-4" v-else>
                     <Icon name="users" class="h-16 w-16 text-muted-foreground" />
-                     <p class="text-center text-muted-foreground">
-                        Nenhum Gerente encontrado.
-                    </p> 
-                </div> 
+                    <p class="text-center text-muted-foreground">
+                        Nenhum caminhoneiro encontrado.
+                    </p>
+                </div>
             </div>
         </div>
     </AppLayout>
