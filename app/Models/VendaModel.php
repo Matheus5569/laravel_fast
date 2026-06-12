@@ -20,7 +20,10 @@ class VendaModel extends BaseModel
         'removido',
         'qr_code',
         'status_atual',
-        
+        'baia',
+        'caminhoneiro',
+        'destino',
+
     ];
     public function cliente(): BelongsTo
     {
@@ -36,9 +39,9 @@ class VendaModel extends BaseModel
     }
     public function rastreamento(): HasMany
     {
-            return $this->hasMany(RastreamentoModel::class, 'id_venda');
+        return $this->hasMany(RastreamentoModel::class, 'id_venda');
     }
-    
+
 
 
 }

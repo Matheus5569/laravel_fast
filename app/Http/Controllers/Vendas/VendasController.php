@@ -98,6 +98,9 @@ class VendasController extends Controller
 
                 'qr_code' => Str::uuid(),
                 'status_atual' => 'orcamento_criado',
+                'baia' => $request->baia,
+                'caminhoneiro' => $request->caminhoneiro,
+                'destino' => $request->destino,
             ]);
 
             RastreamentoModel::query()->create([
@@ -147,6 +150,9 @@ class VendasController extends Controller
             $venda->update([
                 'data' => $request->data_venda,
                 'id_cliente' => $request->id_cliente,
+                'baia' => $request->baia,
+                'caminhoneiro' => $request->caminhoneiro,
+                'destino' => $request->destino,
             ]);
 
             // Atualiza ou cria os itens

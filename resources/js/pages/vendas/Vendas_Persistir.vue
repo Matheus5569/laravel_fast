@@ -32,6 +32,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Helper } from '@/Utils/Helper';
 import vendas from '@/routes/vendas';
 import ButtonCriarAddItem from '@/components/produtos/ButtonCriarAddItem.vue';
+import Label from '@/components/ui/label/Label.vue';
 
 const page = usePage();
 const props = page.props as unknown as {
@@ -57,6 +58,11 @@ export interface Venda {
     id?: number;
     data_venda: string;
     id_cliente: number;
+
+    baia?: string;
+    caminhoneiro?: string;
+    destino?: string;
+
     itens?: Record<string, any>[];
 }
 
@@ -65,6 +71,9 @@ const form = useForm<Venda>({
     data_venda: venda?.data ?? '',
     id_cliente: venda?.id_cliente ?? 0,
     itens: venda?.itens ?? [],
+    baia: venda?.baia ?? '',
+    caminhoneiro: venda?.caminhoneiro ?? '',
+    destino: venda?.destino ?? '',
 });
 
 function getItemNome(item: any): string {
@@ -178,7 +187,32 @@ function submit() {
                                 </Select>
                                 <InputError :message="form.errors.id_cliente" />
                                 <!--iplementar os campos aqui-->
-                                
+                                <div class="mb-4 grid grid-cols-1 gap-6 md:grid-cols-3">
+
+                                    <div>
+                                        <Label>Baia</Label>
+
+                                        <input v-model="form.baia" type="text" class="w-full rounded border p-2"
+                                            placeholder="Ex: Baia 01" />
+                                    </div>
+
+                                    <div>
+                                        <Label>Caminhoneiro</Label>
+
+                                        <input v-model="form.caminhoneiro" type="text" class="w-full rounded border p-2"
+                                            placeholder="Nome do caminhoneiro" />
+                                    </div>
+
+                                </div>
+
+                                <div class="mb-4">
+
+                                    <Label>Destino</Label>
+
+                                    <textarea v-model="form.destino" rows="3" class="w-full rounded border p-2"
+                                        placeholder="Informe o endereço de destino" />
+
+                                </div>
                             </div>
                         </div>
                         <Separator />
