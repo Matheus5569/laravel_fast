@@ -68,9 +68,10 @@ Route::prefix('/vendas')->group(function () {
 // ===== RASTREAMENTO ==
 Route::prefix('/rastreamento')->group(function () {
 
-    Route::get('/',[RastreamentoController::class, 'index'])->name('rastreamento.listar');
-    Route::get('/{qrCode}', [RastreamentoController::class, 'visualizar'])->name('rastreamento.visualizar');
+    Route::get('/', [RastreamentoController::class, 'index'])->name('rastreamento.listar');
+    Route::get('/dashboard-producao', [RastreamentoController::class, 'dashboardFuncionario'])->name('dashboardFunc.producao');
     Route::post('/avancar/{idVenda}', [RastreamentoController::class, 'avancarStatus'])->name('rastreamento.avancar');
+    Route::get('/{qrCode}', [RastreamentoController::class, 'visualizar'])->name('rastreamento.visualizar');
 });
 // ===== PRODUTOS =====
 

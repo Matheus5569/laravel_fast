@@ -87,11 +87,50 @@ class RastreamentoController extends Controller
             })
 
             ->get();
-return Inertia::render(
+        return Inertia::render(
             'rastreamento/Rastreamento',
             [
                 'vendas' => $vendas,
                 'filtro' => $busca,
+            ]
+        );
+    }
+    public function dashboardFuncionario()
+    {
+        $vendas = VendaModel::query()
+            ->where('removido', false)
+            ->get();
+
+        return Inertia::render(
+            'rastreamento/DashboardFuncionario',
+            [
+                'totalProducao' => $vendas
+                    ->where('status_atual', 'fazendo_materiais')
+                    ->count(),
+
+                'totalRecorte' => $vendas
+                    ->where('status_atual', 'recorte')
+                    ->count(),
+
+                'totalPintura' => $vendas
+                    ->where('status_atual', 'pintura')
+                    ->count(),
+
+                'totalEstufa' => $vendas
+                    ->where('status_atual', 'estufa_polimerizacao')
+                    ->count(),
+
+                'totalSeparacao' => $vendas
+                    ->where('status_atual', 'separacao')
+                    ->count(),
+
+                'totalCaminhoneiro' => $vendas
+                    ->where('status_atual', 'aguardando_caminhoneiro')
+                    ->count(),
+
+                'totalConcluidos' => $vendas
+                    ->where('status_atual', 'concluido')
+                    ->count(),
             ]
         );
     }

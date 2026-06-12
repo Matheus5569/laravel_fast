@@ -23,6 +23,7 @@ import vendas from '@/routes/vendas';
 import { computed } from 'vue';
 import { dashboard } from '@/routes';
 import rastreamento from '@/routes/rastreamento/index.js';
+import dashboardFunc from '@/routes/dashboardFunc/index.js';
 const page = usePage();
 
 const roleUser = computed(() => (page.props as any).auth?.roleName ?? null);
@@ -31,10 +32,10 @@ const mainNavItems = [
         title: 'Inicio',
         href: dashboard(),
         icon: LayoutDashboard,
-    
+
     },
     {
-        title: 'Vendedores',    
+        title: 'Vendedores',
         href: vendedores.listar(),
         icon: User,
         permission: ['admin'],
@@ -54,7 +55,7 @@ const mainNavItems = [
 
     },
     {
-        title: 'Venda',
+        title: 'Gerenciador de função',
         href: vendas.listar(),
         icon: ShoppingBag,
 
@@ -65,6 +66,11 @@ const mainNavItems = [
         icon: ShoppingBag,
 
     },
+    {
+        title: 'Principal',
+        href: dashboardFunc.producao(),
+        icon: ShoppingBag,
+    }
 ];
 function hasAccess(item: any) {
     if (!item.permission) return true;
