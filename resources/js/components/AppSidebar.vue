@@ -42,6 +42,7 @@ import baias from '@/routes/baias/index.js';
 
 import { computed } from 'vue';
 import { dashboard } from '@/routes';
+import { permission } from 'process';
 
 const page = usePage();
 
@@ -52,7 +53,10 @@ const mainNavItems = [
         title: 'Inicio',
         href: dashboard(),
         icon: LayoutDashboard,
+        permission: ['admin', 'vendedor', 'funcionario'],
     },
+
+    // ADMIN
     {
         title: 'Gerentes',
         href: vendedores.listar(),
@@ -60,50 +64,45 @@ const mainNavItems = [
         permission: ['admin'],
     },
     {
-        title: 'Caminhoneiros',
-        href: caminhoneiros.listar(),
-        icon: User,
-        permission: ['admin'],
-    },
-    {
         title: 'Clientes',
         href: clientes.listar(),
         icon: Users,
-        permission: ['admin'],
+        permission: ['admin','vendedor'],
     },
     {
         title: 'Funcionários',
         href: funcionarios.listar(),
         icon: Users,
-        permission: ['admin'],
-    },
-    {
-        title: 'Baias',
-        href: baias.listar(),
-        icon: LayoutGrid,
-        permission: ['admin'],
+        permission: ['admin','vendedor'],
     },
     {
         title: 'Produtos',
         href: produto.produtos(),
         icon: Gift,
-        permission: ['admin'],
+        permission: ['admin','vendedor'],
     },
+
+    // GERENTE
     {
-        title: 'Gerenciador de função',
+        title: 'Orçamentos',
         href: vendas.listar(),
         icon: ShoppingBag,
+        permission: ['admin', 'vendedor','Cliente'],
     },
     {
         title: 'Rastreamentos',
         href: rastreamento.listar(),
         icon: Truck,
+        permission: ['admin', 'vendedor','funcionario'],
     },
+
+    // FUNCIONÁRIO
     {
-        title: 'Principal',
+        title: 'Produção',
         href: dashboardFunc.producao(),
-        icon: ShoppingBag,
-    }
+        icon: LayoutGrid,
+        permission: ['funcionario'],
+    },
 ];
 
 function hasAccess(item: any) {

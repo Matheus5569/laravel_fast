@@ -33,6 +33,8 @@ import { Helper } from '@/Utils/Helper';
 import vendas from '@/routes/vendas';
 import ButtonCriarAddItem from '@/components/produtos/ButtonCriarAddItem.vue';
 import Label from '@/components/ui/label/Label.vue';
+import Input from '@/components/ui/input/Input.vue';
+import { vMaska } from 'maska/vue';
 
 const page = usePage();
 const props = page.props as unknown as {
@@ -42,7 +44,7 @@ const props = page.props as unknown as {
     produtos?: Record<string, any>[];
 };
 
-const tituloPagina = props.idVenda ? 'Editar Venda' : 'Realizar nova Venda';
+const tituloPagina = props.idVenda ? 'Editar Orçamento' : 'Realizar novo orçamento';
 
 const venda = props.venda;
 
@@ -61,7 +63,15 @@ export interface Venda {
 
     baia?: string;
     caminhoneiro?: string;
-    destino?: string;
+
+    cep?: string;
+    rua?: string;
+    numero?: string;
+    complemento?: string;
+    bairro?: string;
+    cidade?: string;
+    estado?: string;
+    observacao?: string;
 
     itens?: Record<string, any>[];
 }
@@ -73,9 +83,30 @@ const form = useForm<Venda>({
     itens: venda?.itens ?? [],
     baia: venda?.baia ?? '',
     caminhoneiro: venda?.caminhoneiro ?? '',
-    destino: venda?.destino ?? '',
+    cep: venda?.endereco?.cep ?? '',
+    rua: venda?.endereco?.rua ?? '',
+    numero: venda?.endereco?.numero ?? '',
+    complemento: venda?.endereco?.complemento ?? '',
+    bairro: venda?.endereco?.bairro ?? '',
+    cidade: venda?.endereco?.cidade ?? '',
+    estado: venda?.endereco?.estado ?? '',
+    observacao: venda?.observacao ?? '',
 });
+function viaCepLookup(cep: string) {
+    cep = cep.replace(/\D/g, '');
 
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then((response) => response.json())
+        .then((data) => {
+            form.rua = data.logradouro || '';
+            form.bairro = data.bairro || '';
+            form.cidade = data.localidade || '';
+            form.estado = data.uf || '';
+        })
+        .catch((error) => {
+            console.error('Erro ao buscar CEP:', error);
+        });
+}
 function getItemNome(item: any): string {
     return item.produto?.nome ?? item.nome ?? '—';
 }
@@ -153,11 +184,11 @@ function submit() {
 
 <template>
 
-    <Head title="Venda" />
+    <Head title="Orçamento" />
 
     <AppLayout>
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-            <Heading title="Vendas" :description="tituloPagina" />
+            <Heading title="Dados do Orçamento" :description="tituloPagina" />
             <div class="md:grid-cols 4 grid-cols-1">
                 <div
                     class="relative min-h-screen flex-1 rounded-xl border border-sidebar-border/70 p-4 md:min-h-min dark:border-sidebar-border">
@@ -187,33 +218,79 @@ function submit() {
                                 </Select>
                                 <InputError :message="form.errors.id_cliente" />
                                 <!--iplementar os campos aqui-->
-                                <div class="mb-4 grid grid-cols-1 gap-6 md:grid-cols-3">
 
-                                    <div>
-                                        <Label>Baia</Label>
-
-                                        <input v-model="form.baia" type="text" class="w-full rounded border p-2"
-                                            placeholder="Ex: Baia 01" />
-                                    </div>
-
-                                    <div>
-                                        <Label>Caminhoneiro</Label>
-
-                                        <input v-model="form.caminhoneiro" type="text" class="w-full rounded border p-2"
-                                            placeholder="Nome do caminhoneiro" />
-                                    </div>
-
-                                </div>
-
-                                <div class="mb-4">
-
-                                    <Label>Destino</Label>
-
-                                    <textarea v-model="form.destino" rows="3" class="w-full rounded border p-2"
-                                        placeholder="Informe o endereço de destino" />
-
-                                </div>
                             </div>
+                        </div>
+                        <div class="mb-4 grid grid-cols-1 gap-6 md:grid-cols-4">
+
+                            <div>
+                                <Label>Baia</Label>
+
+                                <Input v-model="form.baia" type="text" class="w-full rounded border p-2"
+                                    placeholder="Ex: Baia 01" />
+                            </div>
+
+                            <div>
+                                <Label>Caminhoneiro</Label>
+
+                                <Input v-model="form.caminhoneiro" type="text" class="w-full rounded border p-2"
+                                    placeholder="Nome do caminhoneiro" />
+                            </div>
+                            <div class="grid gap-2 md:col-span-3">
+                                <Label for="observacao">Observações</Label>
+
+                                <textarea v-model="form.observacao" id="observacao" rows="4"
+                                    class="w-full rounded-md border bg-background px-3 py-2"
+                                    placeholder="Observações do orçamento..." />
+                            </div>
+                        </div>
+
+                        <Separator />
+
+                        <Heading title="Endereço de Entrega" class="mt-4" />
+
+                        <div class="mt-4 mb-4 grid grid-cols-1 gap-6 md:grid-cols-3">
+
+
+                            <div class="grid gap-2">
+                                <Label for="cep">CEP</Label>
+                                <Input @blur="viaCepLookup(form.cep)" v-model="form.cep" id="cep" type="text"
+                                    :tabindex="2" autocomplete="cep" name="cep" placeholder="Insira seu CEP"
+                                    v-maska="'#####-###'" />
+                                <InputError :message="form.errors.cep" />
+
+                            </div>
+
+                            <div class="grid gap-2">
+                                <Label for="rua">Rua</Label>
+                                <Input v-model="form.rua" id="rua" placeholder="Rua" />
+                            </div>
+
+                            <div class="grid gap-2">
+                                <Label for="numero">Número</Label>
+                                <Input v-model="form.numero" id="numero" placeholder="Número" />
+                            </div>
+
+                            <div class="grid gap-2">
+                                <Label for="complemento">Complemento</Label>
+                                <Input v-model="form.complemento" id="complemento" placeholder="Complemento" />
+                            </div>
+
+                            <div class="grid gap-2">
+                                <Label for="bairro">Bairro</Label>
+                                <Input v-model="form.bairro" id="bairro" placeholder="Bairro" />
+                            </div>
+
+                            <div class="grid gap-2">
+                                <Label for="cidade">Cidade</Label>
+                                <Input v-model="form.cidade" id="cidade" placeholder="Cidade" />
+                            </div>
+
+                            <div class="grid gap-2">
+                                <Label for="estado">Estado</Label>
+                                <Input v-model="form.estado" id="estado" placeholder="Estado" />
+                            </div>
+
                         </div>
                         <Separator />
                         <Heading title="Itens da Venda" class="mt-4" />

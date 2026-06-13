@@ -69,8 +69,19 @@ Route::prefix('/baias')->middleware('role:admin')->group(function () {
         ->name('baias.listar');
 
 });
+Route::get('/teste-role', function () {
 
+    $user = auth()->user();
 
+    dd([
+        'nome' => $user->name,
+        'roles' => $user->roles->pluck('name'),
+        'admin' => $user->hasRole('admin'),
+        'vendedor' => $user->hasRole('vendedor'),
+        'funcionario' => $user->hasRole('funcionario'),
+    ]);
+
+})->middleware('auth');
 // ===== CLIENTES =====
 
 Route::prefix('/clientes')->middleware('role:admin')->group(function () {
@@ -86,7 +97,7 @@ Route::prefix('/clientes')->middleware('role:admin')->group(function () {
 
 // ===== VENDAS =====
 
-Route::prefix('/vendas')->group(function () {
+Route::prefix('/vendas')->middleware('role:vendedor')->group(function () {
 
     Route::get('/', [VendasController::class, 'vendas'])->name('vendas.listar');//listar
     Route::get('/vendas_persistir/{id?}', [VendasController::class, 'vendas_Persistir'])->name('vendas.persistir');
@@ -100,7 +111,7 @@ Route::prefix('/vendas')->group(function () {
 
 });
 // ===== RASTREAMENTO ==
-Route::prefix('/rastreamento')->group(function () {
+Route::prefix('/rastreamento')->middleware('role:funcionario')->group(function () {
 
     Route::get('/', [RastreamentoController::class, 'index'])->name('rastreamento.listar');
     Route::get('/dashboard-producao', [RastreamentoController::class, 'dashboardFuncionario'])->name('dashboardFunc.producao');
