@@ -48,16 +48,16 @@ function RemoverVendedor() {
 
             <DialogContent>
                 <span>
-                    Tem certeza que deseja remover o vendedor:
+                    Tem certeza que deseja remover o Gerente:
                     <br />
-                    {{ vendedor.users.name }}
+                  <b>{{ vendedor.users.name }}</b>
                 </span>
 
                 <div class="flex justify-end gap-2">
                     <Button @click.prevent="RemoverVendedor"
                         class="bg-red-700 text-white hover:bg-red-700/90 flex items-center gap-2">
                         <Trash2 class="h-4 w-4" />
-                        Remover Vendedor
+                        Remover Gerente
                     </Button>
 
                     <DialogClose>

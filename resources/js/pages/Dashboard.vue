@@ -83,7 +83,7 @@ const funcionalidades = [
 
             <!-- Título -->
             <div class="text-center">
-                <h1 class="text-3xl font-bold">Bem-vindo ao Sistema de Vendas</h1>
+                <h1 class="text-3xl font-bold">Bem-vindo ao Sistema de gestão de pátio logístico </h1>
                 <p class="text-muted-foreground mt-2">
                     Aqui você pode gerenciar vendedores, clientes, produtos e realizar vendas de forma simples.
                 </p>

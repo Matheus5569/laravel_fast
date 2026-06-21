@@ -58,14 +58,14 @@ const vendasFiltradas = computed(() => {
 
 const labelVendedorSelecionado = computed(() => {
     if (!filtroVendedor.value) {
-        return 'Todos os vendedores';
+        return 'Todos os Gerente';
     }
 
     const vendedor = vendedoresList.value.find(
         (v) => v.id_vendedor === filtroVendedor.value,
     );
 
-    return vendedor?.user?.name ?? 'Todos os vendedores';
+    return vendedor?.user?.name ?? 'Todos os Gerentes';
 });
 
 //O Select do shadcn só consegue mostrar automaticamente o valor
@@ -103,14 +103,14 @@ function obterValorComissao(valorVenda: number, comissao: number): number {
 
                     <Button class="bg-yellow-400 text-black hover:bg-yellow-500">
                         <Icon name="plus" />
-                        Realizar Venda 
+                        Realizar Orçamento 
                     </Button>
                 </Link>
             </div>
             <!-- Filtro Vendedor -->
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <div class="flex flex-col gap-1">
-                    <span class="text-sm text-muted-foreground">Vendedor</span>
+                    <span class="text-sm text-muted-foreground">Gerente</span>
                     <Select class="w-full" v-model="filtroVendedor">
                         <SelectTrigger class="h-10 w-full">
                             <SelectValue>
@@ -120,7 +120,7 @@ function obterValorComissao(valorVenda: number, comissao: number): number {
 
                         <SelectContent>
                             <SelectItem :value="null">
-                                Todos os vendedores
+                                Todos os Gerentes
                             </SelectItem>
 
                             <SelectItem v-for="v in vendedoresList" :key="v.id_vendedor" :value="v.id_vendedor">
@@ -158,9 +158,8 @@ function obterValorComissao(valorVenda: number, comissao: number): number {
                     <TableHeader>
                         <TableRow>
                             <TableHead>Cliente</TableHead>
-                            <TableHead>Vendedor</TableHead>
+                            <TableHead>Gerente</TableHead>
                             <TableHead>Valor da Venda</TableHead>
-                            <TableHead>Comissao Vendedor</TableHead>
                             <TableHead>Ações</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -180,18 +179,7 @@ function obterValorComissao(valorVenda: number, comissao: number): number {
                                     )
                                 }}
                             </TableCell>
-                            <TableCell>
-                                R$
-                                {{
-                                    Helper.formatarValorMonetarioPtBr(
-                                        obterValorComissao(
-                                            sumValor(vendas.itens),
-                                            vendas.vendedor?.comissao ?? 0,
-                                        ),
-                                    )
-                                }}
-                            </TableCell>
-
+                           
                             <TableCell>
                                 <AcoesTabelaVenda :venda="vendas" />
                             </TableCell>

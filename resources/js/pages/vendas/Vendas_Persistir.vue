@@ -223,14 +223,14 @@ function submit() {
                         </div>
                         <div class="mb-4 grid grid-cols-1 gap-6 md:grid-cols-4">
 
-                            <div>
+                            <div  class="grid gap-2 md:col-span-1">
                                 <Label>Baia</Label>
 
                                 <Input v-model="form.baia" type="text" class="w-full rounded border p-2"
                                     placeholder="Ex: Baia 01" />
                             </div>
 
-                            <div>
+                            <div class="grid gap-2 md:col-span-1">
                                 <Label>Caminhoneiro</Label>
 
                                 <Input v-model="form.caminhoneiro" type="text" class="w-full rounded border p-2"

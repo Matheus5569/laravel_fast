@@ -42,7 +42,6 @@ import baias from '@/routes/baias/index.js';
 
 import { computed } from 'vue';
 import { dashboard } from '@/routes';
-import { permission } from 'process';
 
 const page = usePage();
 
@@ -53,33 +52,44 @@ const mainNavItems = [
         title: 'Inicio',
         href: dashboard(),
         icon: LayoutDashboard,
-        permission: ['admin', 'vendedor', 'funcionario'],
+        permission: ['admin', 'vendedor', 'funcionario','clientes'],
     },
-
     // ADMIN
     {
         title: 'Gerentes',
         href: vendedores.listar(),
         icon: User,
-        permission: ['admin'],
-    },
-    {
-        title: 'Clientes',
-        href: clientes.listar(),
-        icon: Users,
-        permission: ['admin','vendedor'],
+        permission: ['admin', 'vendedor'],
     },
     {
         title: 'Funcionários',
         href: funcionarios.listar(),
         icon: Users,
-        permission: ['admin','vendedor'],
+        permission: ['admin', 'vendedor'],
+    },
+    {
+        title: 'Clientes',
+        href: clientes.listar(),
+        icon: Users,
+        permission: ['admin', 'vendedor'],
+    },
+    {
+        title: 'Caminhoneiros',
+        href: caminhoneiros.listar(),
+        icon: User,
+        permission: ['admin'],
+    },
+    {
+        title: 'Baias',
+        href: baias.listar(),
+        icon: LayoutGrid,
+        permission: ['admin'],
     },
     {
         title: 'Produtos',
         href: produto.produtos(),
         icon: Gift,
-        permission: ['admin','vendedor'],
+        permission: ['admin', 'vendedor'],
     },
 
     // GERENTE
@@ -87,15 +97,14 @@ const mainNavItems = [
         title: 'Orçamentos',
         href: vendas.listar(),
         icon: ShoppingBag,
-        permission: ['admin', 'vendedor','Cliente'],
+        permission: ['admin', 'vendedor', 'clientes'],
     },
     {
         title: 'Rastreamentos',
         href: rastreamento.listar(),
         icon: Truck,
-        permission: ['admin', 'vendedor','funcionario'],
+        permission: ['admin', 'funcionario'],
     },
-
     // FUNCIONÁRIO
     {
         title: 'Produção',

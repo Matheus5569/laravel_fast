@@ -30,7 +30,7 @@ Route::get('dashboard', function () {
 
 // ===== VENDEDORES =====
 
-Route::prefix('/vendedores')->middleware('role:admin')->group(function () {
+Route::prefix('/vendedores')->middleware('role:admin|vendedor')->group(function () {
 
     Route::get('/', [VendedoresController::class, 'index'])->name('vendedores.listar');
     Route::get('/persistir/{id?}', [VendedoresController::class, 'persistir'])->name('vendedores.persistir');
@@ -43,7 +43,7 @@ Route::prefix('/vendedores')->middleware('role:admin')->group(function () {
 
 // ===== Caminhoneiros =====
 
-Route::prefix('/caminhoneiros')->middleware('role:admin')->group(function () {
+Route::prefix('/caminhoneiros')->middleware('role:admin|vendedor')->group(function () {
 
     Route::get('/', [CaminhoneirosController::class, 'index'])->name('caminhoneiros.listar');
 
@@ -51,7 +51,7 @@ Route::prefix('/caminhoneiros')->middleware('role:admin')->group(function () {
 
 // ===== Funcionários =====
 
-Route::prefix('/funcionarios')->middleware('role:admin')->group(function () {
+Route::prefix('/funcionarios')->middleware('role:admin|vendedor')->group(function () {
 
     Route::get('/', [FuncionariosController::class, 'index'])
         ->name('funcionarios.listar');
@@ -63,7 +63,7 @@ Route::prefix('/funcionarios')->middleware('role:admin')->group(function () {
 
 // ===== Baias =====
 
-Route::prefix('/baias')->middleware('role:admin')->group(function () {
+Route::prefix('/baias')->middleware('role:admin|vendedor')->group(function () {
 
     Route::get('/', [BaiasController::class, 'index'])
         ->name('baias.listar');
@@ -84,7 +84,7 @@ Route::get('/teste-role', function () {
 })->middleware('auth');
 // ===== CLIENTES =====
 
-Route::prefix('/clientes')->middleware('role:admin')->group(function () {
+Route::prefix('/clientes')->middleware('role:admin|vendedor')->group(function () {
 
     Route::get('/', [ClientesController::class, 'listar_clientes'])->name('clientes.listar');
     Route::get('/persistir/{id?}', [ClientesController::class, 'persistir_clientes'])->name('clientes.persistir');
@@ -97,7 +97,7 @@ Route::prefix('/clientes')->middleware('role:admin')->group(function () {
 
 // ===== VENDAS =====
 
-Route::prefix('/vendas')->middleware('role:vendedor')->group(function () {
+Route::prefix('/vendas')->middleware('role:admin|vendedor|clientes')->group(function () {
 
     Route::get('/', [VendasController::class, 'vendas'])->name('vendas.listar');//listar
     Route::get('/vendas_persistir/{id?}', [VendasController::class, 'vendas_Persistir'])->name('vendas.persistir');
@@ -111,7 +111,7 @@ Route::prefix('/vendas')->middleware('role:vendedor')->group(function () {
 
 });
 // ===== RASTREAMENTO ==
-Route::prefix('/rastreamento')->middleware('role:funcionario')->group(function () {
+Route::prefix('/rastreamento')->middleware('role:admin|funcionario')->group(function () {
 
     Route::get('/', [RastreamentoController::class, 'index'])->name('rastreamento.listar');
     Route::get('/dashboard-producao', [RastreamentoController::class, 'dashboardFuncionario'])->name('dashboardFunc.producao');
@@ -120,7 +120,7 @@ Route::prefix('/rastreamento')->middleware('role:funcionario')->group(function (
 });
 // ===== PRODUTOS =====
 
-Route::prefix('/produto')->middleware('role:admin')->group(function () {
+Route::prefix('/produto')->middleware('role:admin|vendedor')->group(function () {
 
     Route::get('/', [ProdutoController::class, 'produtos'])->name('produto.produtos');//listar
 
@@ -131,14 +131,14 @@ Route::prefix('/produto')->middleware('role:admin')->group(function () {
 });
 // ===== ENDEREÇO =====
 
-Route::prefix('/endereco')->middleware('role:admin')->group(function () {
+Route::prefix('/endereco')->middleware('role:admin|vendedor')->group(function () {
 
     Route::post('/create', [EnderecoController::class, 'create'])->name('endereco.create');
 
 });
 // ===== ITENS =====
 
-Route::prefix('/itens')->middleware('role:admin')->group(function () {
+Route::prefix('/itens')->middleware('role:admin|vendedor')->group(function () {
 
 
     Route::post('/create', [ItensController::class, 'create'])->name('itens.create');
