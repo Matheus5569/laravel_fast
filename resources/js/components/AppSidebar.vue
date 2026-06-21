@@ -10,7 +10,9 @@ import {
     ShoppingBag,
     User,
     Users,
-    Truck
+    Truck,
+    Plus,
+    Grid
 } from 'lucide-vue-next';
 
 import NavFooter from '@/components/NavFooter.vue';
@@ -74,22 +76,22 @@ const mainNavItems = [
         permission: ['admin', 'vendedor'],
     },
     {
-        title: 'Caminhoneiros',
-        href: caminhoneiros.listar(),
-        icon: User,
-        permission: ['admin'],
-    },
-    {
-        title: 'Baias',
-        href: baias.listar(),
-        icon: LayoutGrid,
-        permission: ['admin'],
-    },
-    {
         title: 'Produtos',
         href: produto.produtos(),
         icon: Gift,
         permission: ['admin', 'vendedor'],
+    },
+    {
+        title: 'Baias',
+        href: baias.listar(),
+        icon: Grid,
+        permission: ['admin','vendedor'],
+    },
+    {
+        title: 'Caminhoneiros',
+        href: caminhoneiros.listar(),
+        icon: Users,
+        permission: ['admin','vendedor'],
     },
 
     // GERENTE

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import Heading from '@/components/Heading.vue';
-import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
+import Icon from '@/components/Icon.vue';
+
 import {
     Table,
     TableBody,
@@ -11,9 +12,11 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import baias from '@/routes/baias';
+
 import { computed } from 'vue';
-import Icon from '@/components/Icon.vue';
+
+import ButtonCriarBaia from '@/components/baias/ButtonCriarBaia.vue';
+import AcoesTabelaBaia from '@/components/baias/AcoesTabelaBaia.vue';
 
 type Baia = Record<string, any>;
 
@@ -23,29 +26,36 @@ const baiasList = computed<Baia[]>(() => {
     return page.props.baias ?? [];
 });
 
-console.log(baiasList);
+// Para as baias aparecer com acento no front
+
+function traduzirStatus(status: string) {
+
+    const statusMap: Record<string, string> = {
+        Livre: 'Livre',
+        Ocupada: 'Ocupada',
+        Manutencao: 'Manutenção',
+    };
+
+    return statusMap[status] ?? status;
+}
+
 </script>
 
 <template>
+
     <Head title="Baias" />
 
     <AppLayout>
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
-            <Heading
-                title="Baias"
-                description="Lista de baias"
-            />
+            <Heading title="Baias" description="Lista de baias cadastradas" />
 
+            <!-- BOTÃO CRIAR -->
             <div class="md:grid-cols-4 grid-cols-1">
-                <Link :href="baias.listar()">
-                    <Button class="bg-yellow-400 text-black hover:bg-yellow-500">
-                        <Icon name="plus" />
-                        Criar Nova Baia
-                    </Button>
-                </Link>
+                <ButtonCriarBaia />
             </div>
 
+            <!-- TABELA -->
             <div
                 class="relative min-h-screen flex-1 rounded-xl border border-sidebar-border/70 p-4 md:min-h-min dark:border-sidebar-border">
 
@@ -56,14 +66,14 @@ console.log(baiasList);
                             <TableHead>Nome</TableHead>
                             <TableHead>Descrição</TableHead>
                             <TableHead>Status</TableHead>
+                            <TableHead>Ações</TableHead>
                         </TableRow>
                     </TableHeader>
 
                     <TableBody>
-                        <TableRow
-                            v-for="baia in baiasList"
-                            :key="baia.id"
-                        >
+
+                        <TableRow v-for="baia in baiasList" :key="baia.id">
+
                             <TableCell>
                                 {{ baia.id }}
                             </TableCell>
@@ -77,27 +87,37 @@ console.log(baiasList);
                             </TableCell>
 
                             <TableCell>
-                                {{ baia.status }}
+                                <span :class="{
+                                    'text-green-600 font-semibold': baia.status === 'Livre',
+                                    'text-red-600 font-semibold': baia.status === 'Ocupada',
+                                    'text-yellow-600 font-semibold': baia.status === 'Manutencao',
+                                }">
+                                    {{ traduzirStatus(baia.status) }}
+                                </span>
                             </TableCell>
+
+                            <TableCell>
+                                <AcoesTabelaBaia :baia="baia" />
+                            </TableCell>
+
                         </TableRow>
+
                     </TableBody>
                 </Table>
 
-                <div
-                    class="flex h-full w-full flex-col items-center justify-center gap-4"
-                    v-else
-                >
-                    <Icon
-                        name="grid"
-                        class="h-16 w-16 text-muted-foreground"
-                    />
+                <!-- SEM REGISTROS -->
+                <div v-else class="flex h-full w-full flex-col items-center justify-center gap-4">
+
+                    <Icon name="grid" class="h-16 w-16 text-muted-foreground" />
 
                     <p class="text-center text-muted-foreground">
                         Nenhuma baia encontrada.
                     </p>
+
                 </div>
 
             </div>
+
         </div>
     </AppLayout>
 </template>

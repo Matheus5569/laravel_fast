@@ -45,7 +45,20 @@ Route::prefix('/vendedores')->middleware('role:admin|vendedor')->group(function 
 
 Route::prefix('/caminhoneiros')->middleware('role:admin|vendedor')->group(function () {
 
-    Route::get('/', [CaminhoneirosController::class, 'index'])->name('caminhoneiros.listar');
+    Route::get('/', [CaminhoneirosController::class, 'index'])
+        ->name('caminhoneiros.listar');
+
+    Route::get('/persistir/{id?}', [CaminhoneirosController::class, 'persistir'])
+        ->name('caminhoneiros.persistir');
+
+    Route::post('/create', [CaminhoneirosController::class, 'create'])
+        ->name('caminhoneiros.create');
+
+    Route::put('/update/{id_caminhoneiro}', [CaminhoneirosController::class, 'update'])
+        ->name('caminhoneiros.update');
+
+    Route::delete('/remove/{id_caminhoneiro}', [CaminhoneirosController::class, 'remove'])
+        ->name('caminhoneiros.remove');
 
 });
 
@@ -68,7 +81,19 @@ Route::prefix('/baias')->middleware('role:admin|vendedor')->group(function () {
     Route::get('/', [BaiasController::class, 'index'])
         ->name('baias.listar');
 
+    Route::post('/create', [BaiasController::class, 'create'])
+        ->name('baias.create');
+
+    Route::put('/update/{id_baia}', [BaiasController::class, 'update'])
+        ->name('baias.update');
+
+    Route::delete('/remove/{id_baia}', [BaiasController::class, 'remove'])
+        ->name('baias.remove');
+
 });
+
+// ===== Teste =====
+
 Route::get('/teste-role', function () {
 
     $user = auth()->user();
